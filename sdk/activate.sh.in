@@ -1,0 +1,80 @@
+###
+# Copyright CEA (Commissariat à l'énergie atomique et aux
+# énergies alternatives) (2017-2025)
+#
+# This software is governed by the CeCILL  license under French law and
+# abiding by the rules of distribution of free software.  You can  use,
+# modify and/ or redistribute the software under the terms of the CeCILL
+# license as circulated by CEA, CNRS and INRIA at the following URL
+# "http://www.cecill.info".
+#
+# As a counterpart to the access to the source code and  rights to copy,
+# modify and redistribute granted by the license, users are provided only
+# with a limited warranty  and the software's author,  the holder of the
+# economic rights,  and the successive licensors  have only  limited
+# liability.
+#
+# In this respect, the user's attention is drawn to the risks associated
+# with loading,  using,  modifying and/or developing or reproducing the
+# software by the user in light of its specific status of free software,
+# that may mean  that it is complicated to manipulate,  and  that  also
+# therefore means  that it is reserved for developers  and  experienced
+# professionals having in-depth computer knowledge. Users are therefore
+# encouraged to load and test the software's suitability as regards their
+# requirements in conditions enabling the security of their systems and/or
+# data to be ensured and,  more generally, to use and operate it in the
+# same conditions as regards security.
+#
+# The fact that you are presently reading this means that you have had
+# knowledge of the CeCILL license and that you accept its terms.
+###
+
+# shellcheck shell=bash
+
+
+# **WARNING**: this script was generated automatically by sdk/setup.sh from secbench.
+#              It is not intended to be modified directly.
+
+# A simple script to active the shared environment from anywhere.
+# To use it: source <PATH_TO_THIS_FILE>
+function _load_secbench_sdk() {
+    local sdk_root=@@SECBENCH_SDK_ROOT@@
+    local env_name=@@SECBENCH_SDK_ENV_NAME@@
+    local conda_root="${sdk_root}/mambaforge"
+
+    if [[ -n "${SECBENCH_SDK_ENABLED:-}" ]]; then
+        printf "info: SDK already activated. Run \"unset SECBENCH_SDK_ENABLED\" to force reload\n" >&2
+        return 1
+    fi
+
+    if [[ ! -d "${sdk_root}" ]]; then
+        printf "error: variable sdk_root does not seems to point to a valid directory (value=\"%s\")\n" "${sdk_root}" >&2
+        return 1
+    fi
+
+    # shellcheck source=/dev/null
+    source "${conda_root}/etc/profile.d/conda.sh"
+    conda activate "${env_name}"
+
+    # Ensure ~/.config/secbench/config.toml is in SECBENCH_USER_CONFIG if the
+    # file exists.
+    local secbench_shared_config="${HOME}/.config/secbench/config.toml"
+    if [[ -e "${secbench_shared_config}" ]]; then
+      local user_config=${SECBENCH_USER_CONFIG:-""}
+
+      IFS=':' read -r -a config_files <<< "${user_config}"
+      if [[ " ${config_files[@]} " =~ " ${secbench_shared_config} " ]]; then
+        printf "info: shared configuration \"${secbench_shared_config}\" is already in SECBENCH_USER_CONFIG\n" >&2
+      else
+        export SECBENCH_USER_CONFIG="${user_config}:${secbench_shared_config}"
+      fi
+    fi
+
+    export SECBENCH_SDK_ENABLED="yes"
+}
+
+if _load_secbench_sdk; then
+    printf "info: environment loaded successfully!\n" >&2
+else
+    printf "error: environment activation failed :(\n" >&2
+fi

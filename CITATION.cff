@@ -1,0 +1,19 @@
+cff-version: 1.2.0
+message: "If you find this project useful, please cite it as below."
+authors:
+  - family-names: "Hiscock"
+    given-names: "Thomas"
+    orcid: https://orcid.org/0009-0001-5183-2291
+  - family-names: "Maillard"
+    given-names: "Julien"
+    orcid: https://orcid.org/0009-0002-2267-7621
+  - family-names: "Lecomte"
+    given-names: "Maxime"
+    orcid: https://orcid.org/0000-0002-9985-7586
+  - family-names: "Malandrino-Guyot"
+    given-names: "Lucas"
+  - family-names: "Moran"
+    given-names: "Antoine"
+title: "Secbench framework"
+version: 2025.02
+date-released: 2025-02-20
