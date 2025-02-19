@@ -8,6 +8,7 @@ __pycache__/
 /.coverage
 .pytest_cache/
 .tox
+dist/
 
 # IDE
 .idea
