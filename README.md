@@ -5,7 +5,7 @@
 The Secbench framework is a cross-platform toolkit for hardware security characterization developed by [CEA-Leti](https://www.leti-cea.com/cea-tech/leti/english) cybersecurity teams.
 
 Secbench provides Python packages for side-channel analysis and fault injection, that security researchers, teachers or students can use to create advanced and **reproducible experiments**.
-Here is an example generic side-channel acquisition:
+Here is an example of a generic side-channel acquisition:
 
 ```python
 from secbench.api import get_bench
