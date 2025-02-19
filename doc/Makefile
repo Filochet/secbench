@@ -53,3 +53,7 @@ endif
 # "make mode" option.  $(O) is meant as a shortcut for $(SPHINXOPTS).
 build-%: Makefile figs
 	@$(SPHINXBUILD) -M $* "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS)
+
+deploy: build-html
+	touch _build/html/.nojekyll
+	ghp-import _build/html

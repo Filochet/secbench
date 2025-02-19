@@ -46,7 +46,7 @@ dependencies = [
 ]
 
 [project.urls]
-"Homepage" = "https://secbench.fr"
+"Homepage" = "https://doc.secbench.fr"
 "Bug Reports" = "https://github.com/CEA-Leti/secbench/issues"
 "Source" = "https://github.com/CEA-Leti/secbench"
 

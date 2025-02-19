@@ -1,0 +1,20 @@
+# Python temporary
+__pycache__/
+*.py[cod]
+*$py.class
+*.eggs/
+*.egg-info/
+.cache/
+/.coverage
+.pytest_cache/
+.tox
+
+# IDE
+.idea
+
+.venv/
+/venv*
+_build/
+
+# HDF5
+*.hdf5

@@ -41,7 +41,7 @@ master_doc = "index"
 
 # General information about the project.
 project = "Secbench"
-copyright = "2017-2024, CEA-LETI"
+copyright = "2017-2025, CEA-LETI"
 author = "CEA-LETI"
 
 # The version info for the project you're documenting, acts as replacement for

@@ -24,9 +24,9 @@ d, = scope.get_data("1")
 
 ## Getting started
 
-Please refer to the [framework documentation](https://secbench.fr) for getting started.
+Please refer to the [framework documentation](https://doc.secbench.fr) for getting started.
 
-If you want to build the documentation locally, you need to [create a development environment](https://secbench.fr/installation.html#developers) and run `make build-html`  in the [./doc](./doc) directory.
+If you want to build the documentation locally, you need to [create a development environment](https://doc.secbench.fr/installation.html#developers) and run `make build-html`  in the [./doc](./doc) directory.
 
 ## News
 
@@ -67,4 +67,4 @@ The following people have contributed to Secbench:
 
 The open-source release of the Secbench framework is done as part of [PEPR Cybersécurité](https://www.pepr-cybersecurite.fr), [REV project](https://www.pepr-cybersecurite.fr/projet/rev/).
 
-This work has benefited from a government grant managed by the National Research Agency under France 2030 with reference ANR-22-PECY-0009
+This work has benefited from a government grant managed by the National Research Agency under France 2030 with reference ANR-22-PECY-0009.
