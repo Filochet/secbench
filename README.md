@@ -1,11 +1,25 @@
+[![Documentation](https://img.shields.io/badge/documentation-blue)](https://doc.secbench.fr)
+[![License](https://img.shields.io/badge/License-CECILL%202.1-blue)](https://opensource.org/license/cecill-2-1)
+[![secbench-api version](https://img.shields.io/pypi/v/secbench-api)](https://pypi.org/project/secbench-api/#history)
+[![secbench-storage version](https://img.shields.io/pypi/v/secbench-storage)](https://pypi.org/project/secbench-storage/#history)
+[![secbench-picoscope version](https://img.shields.io/pypi/v/secbench-picoscope)](https://pypi.org/project/secbench-picoscope/#history)
+
 # The Secbench Framework
 
 ![Secbench logo](./secbench_logo.png)
 
-The Secbench framework is a cross-platform toolkit for hardware security characterization developed by [CEA-Leti](https://www.leti-cea.com/cea-tech/leti/english) cybersecurity teams.
+Secbench is a cross-platform Python toolkit for hardware security characterization developed by [CEA-Leti](https://www.leti-cea.com/cea-tech/leti/english) cybersecurity teams.
+It is a unified solution for side-channel analysis and fault injection that security researchers, teachers or students can use to create advanced and **reproducible experiments**.
 
-Secbench provides Python packages for side-channel analysis and fault injection, that security researchers, teachers or students can use to create advanced and **reproducible experiments**.
-Here is an example of a generic side-channel acquisition:
+The main features of the secbench framework are:
+- Abstract interfaces for common lab instrument in the [secbench-api](http://doc.secbench.fr/api-reference/api.html#module-secbench-api) package: [oscilloscopes](http://doc.secbench.fr/api-reference/api.html#secbench.api.instrument.Scope), [fault injector](http://doc.secbench.fr/api-reference/api.html#pulser), [arbitrary function generators](http://doc.secbench.fr/api-reference/api.html#arbitrary-function-generators), [tables](http://doc.secbench.fr/api-reference/api.html#table) and others.
+- A [Bench](http://doc.secbench.fr/api-reference/api.html#secbench.api.Bench) abstraction, that supports automatic device dicovery and easy configuration.
+- Drivers specific lab hardware, implementing the abstract interfaces from [secbench-api](http://doc.secbench.fr/api-reference/api.html#module-secbench-api).
+- An [efficient trace format](http://doc.secbench.fr/api-reference/storage.html) based on HDF5 for managing side-channel data.
+- Optimized side-channel processing algorithms in the `secbench-processing` package.
+
+Thanks to Secbench, hardware-agnostic experiments can be written and shared
+by researchers, for example a side-channel acquisition could look like:
 
 ```python
 from secbench.api import get_bench
@@ -35,7 +49,7 @@ components are released yet, stay tuned!
 
 * Upcoming release:
     * `secbench.processing` module (contains side-channel processing tools).
-    * `secbench.cw` module: drivers for ChipWhisperer devices
+    * `secbench.chipwhisperer` module: drivers for [ChipWhisperer](https://www.newae.com/chipwhisperer) devices
     * `secbench.picoscope` module: support of additional models
 * 02/2025: initial release of secbench core components:
     * `secbench.api` module.
