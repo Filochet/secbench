@@ -3,23 +3,32 @@
 [![secbench-api version](https://img.shields.io/pypi/v/secbench-api)](https://pypi.org/project/secbench-api/#history)
 [![secbench-storage version](https://img.shields.io/pypi/v/secbench-storage)](https://pypi.org/project/secbench-storage/#history)
 [![secbench-picoscope version](https://img.shields.io/pypi/v/secbench-picoscope)](https://pypi.org/project/secbench-picoscope/#history)
+![Python Version](https://img.shields.io/pypi/pyversions/secbench-api)
 
 # The Secbench Framework
 
 ![Secbench logo](./secbench_logo.png)
 
 Secbench is a cross-platform Python toolkit for hardware security characterization developed by [CEA-Leti](https://www.leti-cea.com/cea-tech/leti/english) cybersecurity teams.
-It is a unified solution for side-channel analysis and fault injection that security researchers, teachers or students can use to create advanced and **reproducible experiments**.
+It provides a unified solution for side-channel analysis and fault injection, enabling researchers, educators, and students to conduct advanced and **reproducible experiments**.
 
-The main features of the secbench framework are:
-- Abstract interfaces for common lab instrument in the [secbench-api](http://doc.secbench.fr/api-reference/api.html#module-secbench-api) package: [oscilloscopes](http://doc.secbench.fr/api-reference/api.html#secbench.api.instrument.Scope), [fault injector](http://doc.secbench.fr/api-reference/api.html#pulser), [arbitrary function generators](http://doc.secbench.fr/api-reference/api.html#arbitrary-function-generators), [tables](http://doc.secbench.fr/api-reference/api.html#table) and others.
-- A [Bench](http://doc.secbench.fr/api-reference/api.html#secbench.api.Bench) abstraction, that supports automatic device dicovery and easy configuration.
-- Drivers specific lab hardware, implementing the abstract interfaces from [secbench-api](http://doc.secbench.fr/api-reference/api.html#module-secbench-api).
-- An [efficient trace format](http://doc.secbench.fr/api-reference/storage.html) based on HDF5 for managing side-channel data.
-- Optimized side-channel processing algorithms in the `secbench-processing` package.
+## Main Features
 
-Thanks to Secbench, hardware-agnostic experiments can be written and shared
-by researchers, for example a side-channel acquisition could look like:
+The main features of the Secbench framework are:
+
+- Abstract interfaces for common lab instruments in the [secbench-api](http://doc.secbench.fr/api-reference/api.html#module-secbench-api) package, including: 
+    - [oscilloscopes](http://doc.secbench.fr/api-reference/api.html#secbench.api.instrument.Scope), 
+    - [fault injectors](http://doc.secbench.fr/api-reference/api.html#pulser), 
+    - [arbitrary function generators](http://doc.secbench.fr/api-reference/api.html#arbitrary-function-generators), 
+    - [tables](http://doc.secbench.fr/api-reference/api.html#table) and other equipments.
+- A [Bench](http://doc.secbench.fr/api-reference/api.html#secbench.api.Bench) abstraction, that supports automatic device discovery and easy configuration.
+- Drivers for specific lab hardware, implementing the abstract interfaces from [secbench-api](http://doc.secbench.fr/api-reference/api.html#module-secbench-api).
+- An [efficient HDF5-based trace format](http://doc.secbench.fr/api-reference/storage.html) for managing side-channel data.
+- Optimized side-channel processing algorithms in the `secbench-processing` package (**to be released soon**).
+
+## Example Usage
+
+Thanks to Secbench, hardware-agnostic experiments can be written and shared by researchers, such as a side-channel acquisition:
 
 ```python
 from secbench.api import get_bench
@@ -61,7 +70,7 @@ components are released yet, stay tuned!
 
 This project is licensed under [CECILL-2.1](http://www.cecill.info/index.en.html) (see [LICENSE](./LICENSE)).
 
-If this license is too restricting for your use case, please [contact us](mailto:support+license@secbench.fr).
+If this license is too restricting for your use case, please [contact us](mailto:support@secbench.fr).
 
 ## Contributors
 
