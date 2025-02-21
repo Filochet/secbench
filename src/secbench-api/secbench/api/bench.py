@@ -37,13 +37,16 @@ import os
 import platform
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, Generic, Iterable, Sequence, Type, TypeAlias, TypeVar, Union
+from typing import Any, Generic, Iterable, Sequence, Type, TypeVar, Union
+
+from typing_extensions import TypeAlias
 
 from ._utils import leaf_subclasses
 from .discovery import Discoverable, DiscoverPolicy, discover, discover_first
 from .exceptions import NoSuchHardwareError
 from .instrument import Afg, PowerSupply, Pulser, Scope, Table
 from .types import JSON
+from .helpers import DATACLASS_KW_ONLY_AND_SLOTS
 
 logger = logging.getLogger(__name__)
 
@@ -103,7 +106,7 @@ class DeviceScanner(Generic[U], abc.ABC):
         pass
 
 
-@dataclass(kw_only=True, slots=True, frozen=True)
+@dataclass(frozen=True, **DATACLASS_KW_ONLY_AND_SLOTS)
 class VxiDeviceEntry:
     """
     Entry returned by a :py:class:`~secbench.api.VxiScanner`.
@@ -151,6 +154,7 @@ class VxiScanner(DeviceScanner[VxiDeviceEntry]):
     def is_supported(cls) -> bool:
         try:
             import vxi11
+
             _ = vxi11  # Use variable to avoid lint warning
             return True
         except ImportError:
@@ -180,7 +184,7 @@ class VxiScanner(DeviceScanner[VxiDeviceEntry]):
         logger.debug(f"vxi scan result: {self._devices}")
 
 
-@dataclass(kw_only=True, slots=True, frozen=True)
+@dataclass(frozen=True, **DATACLASS_KW_ONLY_AND_SLOTS)
 class UsbDeviceEntry:
     """
     Entries returned by the :py:class:`~secbench.api.LibUdevScanner`.
@@ -215,6 +219,7 @@ class LibUdevScanner(DeviceScanner[UsbDeviceEntry]):
     def is_supported(cls) -> bool:
         try:
             import pyudev
+
             _ = pyudev  # Use variable to avoid lint warning
 
             return True
@@ -243,7 +248,7 @@ class LibUdevScanner(DeviceScanner[UsbDeviceEntry]):
         self._devices = devices
 
 
-@dataclass(kw_only=True, slots=True, frozen=True)
+@dataclass(frozen=True, **DATACLASS_KW_ONLY_AND_SLOTS)
 class SerialDeviceEntry:
     """
     Entry returned by a :py:class:`~secbench.api.SerialScanner`.
@@ -278,6 +283,7 @@ class SerialScanner(DeviceScanner[SerialDeviceEntry]):
     def is_supported(cls) -> bool:
         try:
             import serial
+
             _ = serial  # Use variable to avoid lint warning
 
             return True
@@ -301,7 +307,7 @@ class SerialScanner(DeviceScanner[SerialDeviceEntry]):
         ]
 
 
-@dataclass(frozen=True, kw_only=True, slots=True)
+@dataclass(frozen=True, **DATACLASS_KW_ONLY_AND_SLOTS)
 class UsbCoreEntry:
     """
     Entry returned by :py:class:`~secbench.api.UsbCoreScanner`.
@@ -335,6 +341,7 @@ class UsbCoreScanner(DeviceScanner[UsbCoreEntry]):
     def is_supported(cls) -> bool:
         try:
             import usb.core
+
             _ = usb.core  # Use variable to avoid lint warning
 
             return True
@@ -405,6 +412,7 @@ class PyVisaScanner(DeviceScanner[str]):
             self._rm = rm
         else:
             import pyvisa
+
             _ = pyvisa  # Use variable to avoid lint warning
 
             self._rm = pyvisa.ResourceManager()
@@ -415,6 +423,7 @@ class PyVisaScanner(DeviceScanner[str]):
     def is_supported(cls) -> bool:
         try:
             import pyvisa
+
             _ = pyvisa
 
             return True

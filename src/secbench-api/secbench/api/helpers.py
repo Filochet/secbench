@@ -32,6 +32,7 @@ from __future__ import annotations
 
 import binascii
 import collections.abc
+from dataclasses import dataclass
 import datetime
 import itertools
 import logging
@@ -44,6 +45,11 @@ import serial.tools.list_ports  # type: ignore
 from .exceptions import SecbenchError
 
 logger = logging.getLogger(__name__)
+
+
+DATACLASS_KW_ONLY = dict(kw_only=True) if 'kw_only' in dataclass.__kwdefaults__ else {}
+DATACLASS_SLOTS = dict(slots=True) if 'slots' in dataclass.__kwdefaults__ else {}
+DATACLASS_KW_ONLY_AND_SLOTS = DATACLASS_SLOTS | DATACLASS_KW_ONLY
 
 
 class OrderedFrozenSet(collections.abc.Set):

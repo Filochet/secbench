@@ -31,7 +31,7 @@
 
 [project]
 name = "secbench-picoscope"
-version = "0.3.0"
+version = "0.3.1"
 description = "Drivers for Picoscope devices, compliant with secbench-api"
 authors = [ { name = "Secbench team" , email = "support@secbench.fr" } ]
 readme = "README.md"
@@ -40,6 +40,20 @@ requires-python = ">= 3.9"
 dependencies = [
     "secbench-api>=1.7.0",
     "numpy>=1.18",
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Security",
+    "Topic :: Scientific/Engineering",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: CEA CNRS Inria Logiciel Libre License, version 2.1 (CeCILL-2.1)"
 ]
 
 [project.urls]

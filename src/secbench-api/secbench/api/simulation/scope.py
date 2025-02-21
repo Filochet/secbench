@@ -35,9 +35,10 @@ from typing import Mapping, Sequence
 
 import numpy as np
 
-from secbench.api.enums import Arithmetic, Coupling, Decimation
-from secbench.api.exceptions import InstrumentError, InvalidParameter
-from secbench.api.instrument import Scope, ScopeAnalogChannel
+from ..enums import Arithmetic, Coupling, Decimation
+from ..exceptions import InstrumentError, InvalidParameter
+from ..instrument import Scope, ScopeAnalogChannel
+from ..helpers import DATACLASS_KW_ONLY_AND_SLOTS
 
 
 def rand_int8_generator(channels, n_traces: int, n_samples: int):
@@ -47,7 +48,7 @@ def rand_int8_generator(channels, n_traces: int, n_samples: int):
     ]
 
 
-@dataclass(kw_only=True, slots=True)
+@dataclass(**DATACLASS_KW_ONLY_AND_SLOTS)
 class ChannelState:
     enabled: bool
     range: float

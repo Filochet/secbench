@@ -32,7 +32,9 @@ from __future__ import annotations
 
 import abc
 import logging
-from typing import Iterator, Optional, TypeAlias
+from typing import Iterator, Optional
+
+from typing_extensions import TypeAlias
 
 from ..backend.types import Backend
 from ..bench import HardwareInfo, SerialScanner

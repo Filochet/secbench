@@ -35,10 +35,11 @@ import dataclasses
 from dataclasses import dataclass
 from typing import Any, Generic, Mapping, Protocol, Sequence, Type, TypeVar
 
-from secbench.api.enums import Slope, TriggerSource
+from ..enums import Slope, TriggerSource
+from ..helpers import DATACLASS_KW_ONLY
 
 
-@dataclass(kw_only=True)
+@dataclass(**DATACLASS_KW_ONLY)
 class DelayParams:
     """
     Common parameters for fault injection.
@@ -47,7 +48,7 @@ class DelayParams:
     delay_ns: float
 
 
-@dataclass(kw_only=True)
+@dataclass(**DATACLASS_KW_ONLY)
 class GlitchParams(DelayParams):
     """
     Parameter of a voltage glitch fault injection.
@@ -59,7 +60,7 @@ class GlitchParams(DelayParams):
     width_ns: float
 
 
-@dataclass(kw_only=True)
+@dataclass(**DATACLASS_KW_ONLY)
 class EMPulseParams(DelayParams):
     """
     Parameters for electro-magnetic fault injection.
@@ -75,7 +76,7 @@ class EMPulseParams(DelayParams):
     amplitude: float
 
 
-@dataclass(kw_only=True)
+@dataclass(**DATACLASS_KW_ONLY)
 class LaserParams(DelayParams):
     """
     Parameters for laser fault injection.

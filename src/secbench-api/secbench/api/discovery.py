@@ -34,7 +34,9 @@ from __future__ import annotations
 import abc
 import enum
 import logging
-from typing import TYPE_CHECKING, Any, Generic, Iterable, Self, Type, TypeAlias, TypeVar
+from typing import TYPE_CHECKING, Any, Generic, Iterable, Type, TypeVar
+
+from typing_extensions import Self, TypeAlias
 
 from ._utils import leaf_subclasses
 from .exceptions import NoSuchHardwareError

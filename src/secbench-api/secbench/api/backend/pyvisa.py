@@ -32,7 +32,9 @@ from __future__ import annotations
 
 import abc
 import logging
-from typing import Any, Iterator, Protocol, TypeAlias
+from typing import Any, Iterator, Protocol
+
+from typing_extensions import TypeAlias
 
 from ..backend.types import Backend
 from ..bench import HardwareInfo, PyVisaScanner

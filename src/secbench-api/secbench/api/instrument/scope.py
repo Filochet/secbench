@@ -38,6 +38,7 @@ from typing import Mapping, Sequence
 
 from ..enums import Arithmetic, Coupling, Decimation, Slope
 from ..exceptions import NoSuchChannelError
+from ..helpers import DATACLASS_KW_ONLY_AND_SLOTS
 
 logger = logging.getLogger(__name__)
 
@@ -614,7 +615,7 @@ class Scope(abc.ABC):
                 raise NoSuchChannelError(channel)
 
 
-@dataclass(kw_only=True, slots=True)
+@dataclass(**DATACLASS_KW_ONLY_AND_SLOTS)
 class CalibrationData:
     """
     Data returned by calibration callbacks.

@@ -31,7 +31,7 @@
 
 [project]
 name = "secbench-api"
-version = "1.7.0"
+version = "1.7.1"
 description = "Common definition and interfaces used in the Secbench framework"
 authors = [ { name = "Secbench team" , email = "support@secbench.fr" } ]
 license = { file = "LICENSE" }
@@ -43,7 +43,23 @@ dependencies = [
     "PyVISA>=1.11",
     "numpy>=1.20",
     "python-vxi11>=0.9",
-    "pyudev>=0.24; sys_platform=='linux'"
+    "pyudev>=0.24; sys_platform=='linux'",
+    "toml>=0.10; python_version<'3.11'",
+    "typing-extensions>=4.0.0",
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Security",
+    "Topic :: Scientific/Engineering",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: CEA CNRS Inria Logiciel Libre License, version 2.1 (CeCILL-2.1)"
 ]
 
 [project.urls]

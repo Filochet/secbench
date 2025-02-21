@@ -31,7 +31,9 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import TypeAlias, Union
+from typing import Union
+
+from typing_extensions import TypeAlias
 
 JSON: TypeAlias = Union[dict[str, "JSON"], list["JSON"], str, int, float, bool, None]
 
