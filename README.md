@@ -1,8 +1,8 @@
 [![Documentation](https://img.shields.io/badge/documentation-blue)](https://doc.secbench.fr)
 [![License](https://img.shields.io/badge/License-CECILL%202.1-blue)](https://opensource.org/license/cecill-2-1)
-[![secbench-api version](https://img.shields.io/pypi/v/secbench-api)](https://pypi.org/project/secbench-api/#history)
-[![secbench-storage version](https://img.shields.io/pypi/v/secbench-storage)](https://pypi.org/project/secbench-storage/#history)
-[![secbench-picoscope version](https://img.shields.io/pypi/v/secbench-picoscope)](https://pypi.org/project/secbench-picoscope/#history)
+[![secbench-api version](https://img.shields.io/pypi/v/secbench-api?label=pypi%3A%20secbench-api)](https://pypi.org/project/secbench-api/#history)
+[![secbench-storage version](https://img.shields.io/pypi/v/secbench-storage?label=pypi%3A%20secbench-storage)](https://pypi.org/project/secbench-storage/#history)
+[![secbench-picoscope version](https://img.shields.io/pypi/v/secbench-picoscope?label=pypi%3A%20secbench-picoscope)](https://pypi.org/project/secbench-picoscope/#history)
 ![Python Version](https://img.shields.io/pypi/pyversions/secbench-api)
 
 # The Secbench Framework
