@@ -56,4 +56,5 @@ build-%: Makefile figs
 
 deploy: build-html
 	touch _build/html/.nojekyll
+	echo "doc.secbench.fr" > _build/html/CNAME
 	ghp-import _build/html
