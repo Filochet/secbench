@@ -87,6 +87,11 @@ The following people have contributed to Secbench:
 - Thomas Loubier
 - Alexandre Macabies
 
+## Research Works Using Secbench
+
+We would be happy to hear about your use of Secbench.
+In [PUBLICATIONS.md](./PUBLICATIONS.md) we list some research works made at CEA which used the Secbench framework.
+
 ## Acknowledgements
 
 The open-source release of the Secbench framework is done as part of [PEPR Cybersécurité](https://www.pepr-cybersecurite.fr), [REV project](https://www.pepr-cybersecurite.fr/projet/rev/).
