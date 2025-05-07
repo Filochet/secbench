@@ -85,28 +85,22 @@ function __setup_or_update_secbench() {
     # Packages in anaconda or conda-forge repositories
     conda_pkgs=(
         asciitree
-        black
         click
         cython
         flake8
         furo
+        lttbc
         h5py
         ipython
-        isort
-        jinja2
         jupyter
         jupytext
-        marshmallow-dataclass
         matplotlib
         maturin
-        msgpack-python
-        multiprocess
         mypy
         myst-nb
-        networkx
+        numba  # Comment if this causes troubles
         numpy
         pint
-        poetry
         pyftdi
         pylibftdi
         pyserial
@@ -114,12 +108,16 @@ function __setup_or_update_secbench() {
         python-dateutil
         python-vxi11
         pyudev
+        pandas
         pyusb
         pyvisa
         ruff
         sphinx
+        scikit-learn
+        scipy
         setuptools
         tabulate
+        tensorflow
         tqdm
     )
     __log_info "installing anaconda packages (from anaconda repository or conda-forge). This can take a few minutes to complete..."
@@ -140,8 +138,9 @@ function __setup_or_update_secbench() {
     secbench_dev_pkgs=(
         "$secbench_dir/secbench-api"
         "$secbench_dir/secbench-storage"
-        "$secbench_dir/secbench-picoscope")
-        # "$secbench_dir/processing")
+        "$secbench_dir/secbench-picoscope"
+        "$secbench_dir/secbench-native"
+        "$secbench_dir/secbench-processing")
 
     __log_info "installing secbench packages in developpment mode through pip"
     # NOTE: we need to install them one at a time, otherwise the '-e' option

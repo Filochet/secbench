@@ -32,11 +32,11 @@ from __future__ import annotations
 
 import binascii
 import collections.abc
-from dataclasses import dataclass
 import datetime
 import itertools
 import logging
 import time
+from dataclasses import dataclass
 from typing import Generator, Iterator, Sequence, Union
 
 import numpy as np
@@ -47,8 +47,8 @@ from .exceptions import SecbenchError
 logger = logging.getLogger(__name__)
 
 
-DATACLASS_KW_ONLY = dict(kw_only=True) if 'kw_only' in dataclass.__kwdefaults__ else {}
-DATACLASS_SLOTS = dict(slots=True) if 'slots' in dataclass.__kwdefaults__ else {}
+DATACLASS_KW_ONLY = dict(kw_only=True) if "kw_only" in dataclass.__kwdefaults__ else {}
+DATACLASS_SLOTS = dict(slots=True) if "slots" in dataclass.__kwdefaults__ else {}
 DATACLASS_KW_ONLY_AND_SLOTS = DATACLASS_SLOTS | DATACLASS_KW_ONLY
 
 
@@ -122,7 +122,7 @@ def find_serial_device(expr: str) -> str:
     try:
         return next(serial.tools.list_ports.grep(expr)).device
     except StopIteration:
-        raise SecbenchError(f"No such device: {expr}")
+        raise SecbenchError(f"No such device: {expr}") from None
 
 
 def find_device_serial_number(expr: str) -> str:
@@ -137,7 +137,7 @@ def find_device_serial_number(expr: str) -> str:
     try:
         return next(serial.tools.list_ports.grep(expr)).serial_number
     except StopIteration:
-        raise SecbenchError(f"No such device: {expr}")
+        raise SecbenchError(f"No such device: {expr}") from None
 
 
 def find_usbtmc_device(expr: str) -> Iterator[str]:
@@ -158,7 +158,7 @@ def find_usbtmc_device(expr: str) -> Iterator[str]:
                 for device in parent.children:
                     yield device.device_node
     except StopIteration:
-        raise SecbenchError(f"No such device: {expr}")
+        raise SecbenchError(f"No such device: {expr}") from None
 
 
 def find_usb_device(expr: str) -> Iterator[str]:
@@ -179,7 +179,7 @@ def find_usb_device(expr: str) -> Iterator[str]:
                 for device in parent.children:
                     yield device.device_node
     except StopIteration:
-        raise SecbenchError(f"No such device: {expr}")
+        raise SecbenchError(f"No such device: {expr}") from None
 
 
 def is_clipping(
@@ -230,9 +230,9 @@ def create_cartography_points(tl, br, nx, ny, z=None, shuffle_lines=False):
     xs = np.linspace(tl[0], br[0], nx)
     ys = np.linspace(tl[1], br[1], ny)
     if z is None:
-        assert (
-            tl[2] == br[2]
-        ), "top left and bottom right must have the same Z value (or you must pass a custom z value to this function)."
+        assert tl[2] == br[2], (
+            "top left and bottom right must have the same Z value (or you must pass a custom z value to this function)."
+        )
         z = br[2]
 
     points = np.array(list(itertools.product(xs, ys))).reshape(nx * ny, 2)

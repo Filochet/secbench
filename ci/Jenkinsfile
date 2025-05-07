@@ -1,0 +1,31 @@
+// Jenkinsfile for packaging secbench-native using manylinux2014 image
+pipeline {
+    agent {
+        label 'secbench-jenkins-agent-1'
+    }
+    options {
+        timeout(time: 1, unit: 'HOURS')
+    }
+    stages {
+        stage('build') {
+            agent {
+                docker {
+                    image 'secbench:v11'
+                    args '--network host -v $HOME/jenkins/cache/pip:/home/jenkins/.cache/pip  -v $HOME/jenkins/cache/cargo:/home/jenkins/.cargo/registry -v $HOME/jenkins/secbench-wheels:/home/jenkins/secbench-wheels'
+                }
+            }
+            steps {
+                sh """
+                . /home/jenkins/.bash_profile
+                env
+
+                pushd src/secbench-native
+                maturin build --release
+                popd
+
+                find . -name '*.whl' -exec cp -v {} /home/jenkins/secbench-wheels/ \\;
+                """
+            }
+        }
+    }
+}

@@ -1,0 +1,103 @@
+# Copyright CEA (Commissariat à l'énergie atomique et aux
+# énergies alternatives) (2017-2025)
+#
+# This software is governed by the CeCILL  license under French law and
+# abiding by the rules of distribution of free software.  You can  use,
+# modify and/ or redistribute the software under the terms of the CeCILL
+# license as circulated by CEA, CNRS and INRIA at the following URL
+# "http://www.cecill.info".
+#
+# As a counterpart to the access to the source code and  rights to copy,
+# modify and redistribute granted by the license, users are provided only
+# with a limited warranty  and the software's author,  the holder of the
+# economic rights,  and the successive licensors  have only  limited
+# liability.
+#
+# In this respect, the user's attention is drawn to the risks associated
+# with loading,  using,  modifying and/or developing or reproducing the
+# software by the user in light of its specific status of free software,
+# that may mean  that it is complicated to manipulate,  and  that  also
+# therefore means  that it is reserved for developers  and  experienced
+# professionals having in-depth computer knowledge. Users are therefore
+# encouraged to load and test the software's suitability as regards their
+# requirements in conditions enabling the security of their systems and/or
+# data to be ensured and,  more generally, to use and operate it in the
+# same conditions as regards security.
+#
+# The fact that you are presently reading this means that you have had
+# knowledge of the CeCILL license and that you accept its terms.
+
+[workspace]
+members = [
+  "crates/secbench_processing",
+  "crates/secbench_crypto",
+  "crates/secbench_dsp",
+]
+package.version = "0.2.3"
+package.edition = "2021"
+
+## NOTE: Declare every dependency used here to avoid version conflicts
+
+[workspace.dependencies]
+# Python bindings stuff
+pyo3 = { version = "0.21", features = ["abi3-py38"] }
+numpy = "0.21"
+
+# Common rust stuff
+num = "0.4"
+num-traits = "0.2"
+rand = "0.8"
+rand_core = "0.6"
+# Threading stuff
+rayon = "1.10"
+
+# Logs
+tracing = { version = "0.1", features = ["release_max_level_info"] }
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+
+# Number crunching stuff
+ndarray = "0.15"
+itertools = "0.13"
+realfft = "3.3"
+fftconvolve = "0.1.1"
+
+# Serialisation
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+ndarray-npy = "0.8"
+# hdf5 = "0.8"
+# hdf5-sys = { version = "0.8", features = ["static"] }
+
+# Rust-only secbench packages
+secbench_crypto = { path = "crates/secbench_crypto" }
+secbench_dsp = { path = "crates/secbench_dsp" }
+
+[profile.dev]
+# Use slightly better optimizations.
+opt-level = 1
+
+[profile.release]
+# debug = true
+# debug-assertions = true
+lto = true
+codegen-units = 1
+
+## Here starts the bindings parts
+# It optionally depends on the other crates so you can enable/disable them with a feature flag
+
+[package]
+name = "secbench_native"
+version.workspace = true
+edition.workspace = true
+
+[lib]
+crate-type = ["cdylib"]
+
+[features]
+default = [
+  "secbench_processing",
+]
+
+[dependencies]
+pyo3.workspace = true
+secbench_processing = { path = "crates/secbench_processing", optional = true }

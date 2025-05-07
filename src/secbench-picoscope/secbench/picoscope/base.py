@@ -38,6 +38,7 @@ from dataclasses import dataclass
 from typing import Any, Optional, Sequence, Tuple
 
 import numpy as np
+
 from secbench.api.enums import Arithmetic, Coupling, Decimation, Slope
 from secbench.api.exceptions import (
     InstrumentError,
@@ -63,9 +64,12 @@ class PicoHandles:
     psGetTimebase2: Any
     psSetChannel: Any
     psMemorySegments: Any
+    psSetNoOfCaptures: Any
     psRunBlock: Any
     psSetDataBuffer: Any
+    psSetDataBufferBulk: Any
     psGetValues: Any
+    psGetValuesBulk: Any
     psSetSimpleTrigger: Any
     psPingUnit: Any = None
 
@@ -172,11 +176,7 @@ class Picobase(Scope, abc.ABC):
     # Conversion from secbench's slope to API identifier.
     #
     # For implementors: check that the default implementation matches your device.
-    _PICO_SLOPES = {
-        Slope.rising: 0,
-        Slope.falling: 1,
-        Slope.either: 2,
-    }
+    _PICO_SLOPES = {}
 
     # For implementors: check the encoding are the same for your device.
     _PICO_COUPLINGS = {"DC50": 2, "DC": 1, "AC": 0, Coupling.dc: 1, Coupling.ac: 0}
@@ -202,7 +202,7 @@ class Picobase(Scope, abc.ABC):
     ):
         self._handle = None
         handle = ctypes.c_int16(0)
-        pico_check(methods.psOpenUnit(ctypes.byref(handle), serial_number))
+        pico_check(methods.psOpenUnit(ctypes.pointer(handle), serial_number))
         assert handle.value > 0, "picoscope device handle is strictly positive"
         self._handle = handle
         self._lib = lib
@@ -225,17 +225,21 @@ class Picobase(Scope, abc.ABC):
                     continue
                 self._device_info[k] = value
 
+        # FIXME: duplicated code with segmented acquisition.
         max_samples = ctypes.c_uint32(0)
         pico_check(
             self._methods.psMemorySegments(self._handle, 1, ctypes.byref(max_samples))
         )
         self._max_samples = int(max_samples.value)
+        self._acq_count = 1
 
         self._timebase: Optional[TimebaseInfo] = None
         self._samples = None
         adc_min, adc_max = self._pico_adc_range()
         self._adc_min = adc_min
         self._adc_max = adc_max
+
+        self._buffers = {}
 
     def __del__(self):
         # The class may be partially initialized, we need to check if the load
@@ -413,14 +417,49 @@ class Picobase(Scope, abc.ABC):
         self._check_horizontal_configuration()
         return self._samples
 
-    def enable_segmented_acquisition(self, count: int):
-        # FIXME: use rapid mode?
-        raise InstrumentUnsupportedFeature(
-            "segmented acquisition is not supported on picoscopes"
+    def _alloc_memory_buffers(self):
+        """
+        This function is responsible for allocating and assigning memory buffers
+        for segmented acquisition (aka. "rapid mode" in picoscope terminology).
+        """
+        if self._acq_count == 1:
+            # Segmented acquisition is off, nothing to allocate.
+            return
+
+        samples = self.horizontal_samples()
+        channels = [ch.name for ch in self.channels().values() if ch.enabled()]
+        logger.debug(
+            f"allocating memory buffers for segmented acquisition (channels, acq_count, samples) = ({len(channels)}, {self._acq_count}, {self._samples})"
         )
+        for ch in channels:
+            buffer = np.zeros((self._acq_count, samples), dtype=np.int16)
+            assert buffer.data.c_contiguous
+            ptr = buffer.ctypes.data
+            self._buffers[ch] = buffer
+            ch_number = self._PICO_CHANNELS[ch]
+            for segment_index in range(self._acq_count):
+                offset = ptr + 2 * segment_index * samples
+                self._methods.psSetDataBufferBulk(
+                    self._handle,
+                    ch_number,
+                    offset,
+                    samples,
+                    segment_index,
+                    self._PICO_RATIO_MODE["NONE"],
+                )
+
+    def enable_segmented_acquisition(self, count: int):
+        max_samples = ctypes.c_uint32(0)
+        rc = self._methods.psMemorySegments(
+            self._handle, count, ctypes.byref(max_samples)
+        )
+        pico_check(rc)
+        self._max_samples = max_samples
+        self._acq_count = count
+        self._alloc_memory_buffers()
 
     def disable_segmented_acquisition(self):
-        pass
+        self._acq_count = 0
 
     def trigger_count(self) -> int:
         raise NotImplementedError()
@@ -487,6 +526,12 @@ class Picobase(Scope, abc.ABC):
 
     def _run_block(self, pre_samples=0, segment_index=0, oversample=1) -> float:
         self._check_horizontal_configuration()
+
+        if self._acq_count > 1:
+            rc = self._methods.psSetNoOfCaptures(
+                self._handle, ctypes.c_uint32(self._acq_count)
+            )
+            pico_check(rc)
         assert pre_samples < self._samples
         post_samples = self._samples - pre_samples
         assert post_samples > 0
@@ -538,13 +583,28 @@ class Picobase(Scope, abc.ABC):
         elif interval and samples:
             duration = interval * samples
         self.set_sampling_interval(interval, duration)
+        self._alloc_memory_buffers()
 
-    def _get_data(self, channels, volts: bool, segment_index=0):
-        data = [np.empty(self._samples, dtype=np.int16) for _ in channels]
+    def _get_data_segmented(self, channels):
+        n_samples = ctypes.c_uint32(self._samples)
+        overflow = (ctypes.c_int16 * self._acq_count)()
+        pico_check(
+            self._methods.psGetValuesBulk(
+                self._handle,
+                ctypes.byref(n_samples),  # noOfSamples
+                0,  # fromSegmentIndex
+                self._acq_count - 1,  # toSegmentIndex
+                1,  # downSampleRatio
+                self._PICO_RATIO_MODE["NONE"],  # downSampleRatioMode
+                overflow,  # overflow
+            )
+        )
+        return [self._buffers[ch] for ch in channels]
+
+    def _get_data_single(self, channels, segment_index):
+        data = [np.zeros(self._samples, dtype=np.int16) for _ in channels]
 
         for ch, d in zip(channels, data):
-            n_samples = ctypes.c_uint32(self._samples)
-            overflow = ctypes.c_int16(0)
             ptr = d.ctypes.data
             ch_api = self._PICO_CHANNELS[ch]
             pico_check(
@@ -552,22 +612,31 @@ class Picobase(Scope, abc.ABC):
                     self._handle, ch_api, ptr, len(d), self._PICO_RATIO_MODE["NONE"]
                 )
             )
-            pico_check(
-                self._methods.psGetValues(
-                    self._handle,
-                    0,
-                    ctypes.byref(n_samples),
-                    1,
-                    self._PICO_RATIO_MODE["NONE"],
-                    segment_index,
-                    ctypes.byref(overflow),
-                )
+        n_samples = ctypes.c_uint32(self._samples)
+        overflow = ctypes.c_int16(0)
+        pico_check(
+            self._methods.psGetValues(
+                self._handle,
+                0,
+                ctypes.byref(n_samples),
+                1,
+                self._PICO_RATIO_MODE["NONE"],
+                segment_index,
+                ctypes.byref(overflow),
             )
-            n_samples = int(n_samples.value)
-            if n_samples < self._samples:
-                logger.info(
-                    f"got less samples than requested ({n_samples}, {self._samples} requested"
-                )
+        )
+        n_samples = int(n_samples.value)
+        if n_samples < self._samples:
+            logger.info(
+                f"got less samples than requested ({n_samples}, {self._samples} requested"
+            )
+        return data
+
+    def _get_data(self, channels, volts: bool, segment_index=0):
+        if self._acq_count > 1:
+            data = self._get_data_segmented(channels)
+        else:
+            data = self._get_data_single(channels, segment_index=segment_index)
 
         for d in data:
             yield d
@@ -602,5 +671,5 @@ class Picobase(Scope, abc.ABC):
 
     def _set_trigger(self, channel, slope, level, delay):
         self._setup_simple_trigger(
-            channel, threshold=level, direction=slope, delay=delay, timeout=1000 * 10
+            channel, threshold=level, direction=slope, delay=delay, timeout=0
         )

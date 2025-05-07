@@ -1,4 +1,3 @@
-###
 # Copyright CEA (Commissariat à l'énergie atomique et aux
 # énergies alternatives) (2017-2025)
 #
@@ -31,7 +30,7 @@
 
 [project]
 name = "secbench-picoscope"
-version = "0.3.1"
+version = "0.4.0"
 description = "Drivers for Picoscope devices, compliant with secbench-api"
 authors = [ { name = "Secbench team" , email = "support@secbench.fr" } ]
 readme = "README.md"
@@ -44,7 +43,6 @@ dependencies = [
 classifiers = [
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3 :: Only",
-    "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
@@ -60,6 +58,29 @@ classifiers = [
 "Homepage" = "https://doc.secbench.fr"
 "Bug Reports" = "https://github.com/CEA-Leti/secbench/issues"
 "Source" = "https://github.com/CEA-Leti/secbench"
+
+[tool.ruff.lint]
+select = [
+    # pycodestyle
+    "E",
+    # Pyflakes
+    "F",
+    # pyupgrade
+    # "UP",
+    # flake8-bugbear
+    "B",
+    # flake8-simplify
+    "SIM",
+    # isort
+    "I",
+]
+ignore = [
+    "E501",  # Line too long.
+    "SIM108",  # Use of ternary operator.
+    "SIM102", # Nested if: we do not think this makes better code.
+    "SIM103", # Return condition vs. if: we do not think this makes better code in all situations.
+    "SIM105", # Use contextlib.supress instead of try/except: we do not think this makes better code.
+]
 
 [build-system]
 requires = ["setuptools >= 61.0"]

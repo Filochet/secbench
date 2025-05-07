@@ -36,8 +36,8 @@ from collections import OrderedDict
 from typing import Iterable, Mapping, Tuple
 
 from secbench.api import Discoverable, HardwareInfo
+from secbench.api.enums import Slope
 from secbench.api.instrument import ScopeAnalogChannel
-
 from secbench.picoscope.lib.ps2000a import PicoInfo, load_ps2000a
 
 from .base import Picobase, PicobaseAnalogChannel, PicoHandles
@@ -53,6 +53,11 @@ class PicoPS2000AScope(Discoverable, Picobase):
         "B": 1,
     }
     _PICO_CHANNELS = {"A": 0, "B": 1}
+    _PICO_SLOPES = {
+        Slope.rising: 2,
+        Slope.falling: 3,
+        Slope.either: 4,
+    }
 
     _PICO_VERTICAL_RANGES = [
         # VerticalRange(10e-3, 0, "10 mV"),
@@ -90,11 +95,14 @@ class PicoPS2000AScope(Discoverable, Picobase):
             psGetTimebase2=lib.ps2000aGetTimebase2,
             psSetChannel=setChannel,
             psStop=lib.ps2000aStop,
+            psSetNoOfCaptures=lib.ps2000aSetNoOfCaptures,
             psRunBlock=lib.ps2000aRunBlock,
             # psSetDataBuffer=lib.ps2000aSetDataBuffer,
             # Patched setDataBuffer to match PS6000 style.
             psSetDataBuffer=setDataBuffer,
+            psSetDataBufferBulk=lib.ps2000aSetDataBuffer,
             psGetValues=lib.ps2000aGetValues,
+            psGetValuesBulk=lib.ps2000aGetValuesBulk,
             psSetSimpleTrigger=lib.ps2000aSetSimpleTrigger,
             psMemorySegments=lib.ps2000aMemorySegments,
             psPingUnit=lib.ps2000aPingUnit,

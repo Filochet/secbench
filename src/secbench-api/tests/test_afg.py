@@ -78,14 +78,14 @@ def test_getters_setters(afg):
     ch.set_function(Function.pulse)
     assert ch.function() == Function.pulse
     ch.set_frequency(1e3)
-    assert 1e3 == ch.frequency()
+    assert ch.frequency() == 1e3
     ch.set_voltage(1.2, offset=1)
     amplitude, offset = ch.voltage()
-    assert 1.2 == amplitude
-    assert 1 == offset
+    assert amplitude == 1.2
+    assert offset == 1
 
     ch.set_pulse_width(70)
-    assert 70 == ch.pulse_width()
+    assert ch.pulse_width() == 70
 
     ch.set_function(Function.square)
     assert Function.square == ch.function()
@@ -95,14 +95,14 @@ def test_getters_setters(afg):
     #     assert 20 == ch.duty_cycle()
     ch.set_function(Function.pulse)
     ch.set_duty_cycle(30)
-    assert 30 == ch.duty_cycle()
+    assert ch.duty_cycle() == 30
 
     afg.reset()
     ch.set_function(Function.ramp)
     ch.set_ratio(95)
-    assert 95 == ch.ratio()
+    assert ch.ratio() == 95
     ch.set_burst_mode(3, BurstMode.triggered)
-    assert 3 == ch.burst_count()
+    assert ch.burst_count() == 3
     ch.set_burst_mode(0, BurstMode.triggered)
 
     ch.set_output_state(enabled=True)

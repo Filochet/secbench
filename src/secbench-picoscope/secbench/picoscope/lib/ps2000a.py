@@ -45,12 +45,12 @@ from ctypes import (
 )
 from enum import IntEnum
 
-from secbench.picoscope.helpers import pico_load_device_lib
+from .common import def_symbol, load_libps
 
 
 class PicoInfo(IntEnum):
     """
-    Information to be requested to `ps6000GetUnitInfo`.
+    Information to be requested to `ps2000aGetUnitInfo`.
     """
 
     DRIVER_VERSION = 0x00000000
@@ -66,16 +66,8 @@ class PicoInfo(IntEnum):
     FIRMWARE_VERSION_2 = 0x0000000A
 
 
-def def_symbol(lib, name, return_type, arg_types, docstring=None):
-    c_function = getattr(lib, name)
-    c_function.restype = return_type
-    c_function.argtypes = arg_types
-    if docstring is not None:
-        c_function.__doc__ = docstring
-
-
 def _load_ps2000a_lib():
-    lib = pico_load_device_lib("ps2000a")
+    lib = load_libps("ps2000a")
     def_symbol(lib, "ps2000aOpenUnit", c_uint32, [c_void_p, c_char_p])
     def_symbol(lib, "ps2000aOpenUnitAsync", c_uint32, [c_void_p, c_char_p])
 
@@ -405,6 +397,7 @@ def _load_ps2000a_lib():
         [c_int16, c_int32, c_int32, c_void_p, c_void_p],
     )
     def_symbol(lib, "ps2000aGetMaxSegments", c_uint32, [c_int16, c_void_p])
+
     return lib
 
 

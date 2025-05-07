@@ -42,23 +42,6 @@ def make_enum(name, fields):
     return Enum(name, mappings)
 
 
-def pico_load_device_lib(name):
-    import platform
-
-    if platform.system() == "Linux":
-        from ctypes import cdll
-
-        lib = cdll.LoadLibrary(f"lib{name}.so.2")
-    elif platform.system() == "Darwin":
-        raise NotImplementedError("MacOSX is not supported yet")
-    else:
-        from ctypes import windll
-        from ctypes.util import find_library
-
-        lib = windll.LoadLibrary(find_library(f"{name}.dll"))
-    return lib
-
-
 def pico_enumerate_serial(ps_enumerate_handle):
     from .error import PicoscopeApiError
 
@@ -74,6 +57,6 @@ def pico_enumerate_serial(ps_enumerate_handle):
 
         serial_ids = bytes(serial_buff[: serial_len.value - 1]).decode()
         for serial_num in serial_ids.split(","):
-            yield serial_num,
+            yield (serial_num,)
     except PicoscopeApiError:
         pass

@@ -193,7 +193,7 @@ def test_12bit_acquisition(scope, afg_channel, segmented_count):
         pytest.skip("the scope does not support the requested configuration")
         return
 
-    for i in range(4):
+    for _i in range(4):
         scope.arm(iterations=100000)
         scope.wait()
         (d,) = scope.get_data(channels[1].name)

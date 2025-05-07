@@ -30,6 +30,7 @@
 ###
 
 from .ps2000a import PicoPS2000AScope
+from .ps3000a import PicoPS3000AScope
 from .ps6000 import PicoPS6000Scope
 
 
@@ -42,4 +43,4 @@ def version() -> str:
     return distribution("secbench-picoscope").version
 
 
-__all__ = ["version", "PicoPS2000AScope", "PicoPS6000Scope"]
+__all__ = ["version", "PicoPS2000AScope", "PicoPS3000AScope", "PicoPS6000Scope"]

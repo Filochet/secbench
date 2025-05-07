@@ -53,8 +53,8 @@ class VXIBackend(Backend):
         self.inst = vxi11.Instrument(host)
         try:
             self.inst.open()
-        except OSError:
-            raise BackendError(f"could not open {host}; check connectivity")
+        except OSError as e:
+            raise BackendError(f"could not open {host}; check connectivity") from e
         super().__init__()
 
     def set_timeout(self, secs: float):
@@ -87,18 +87,18 @@ class VXIDiscoverableMixin(abc.ABC):
         """
         A predicate to detect if an entry matches the current hardware.
 
-        :param idn: the device description returned by the "*IDN?" SCPI command.
+        :param idn: the device description returned by the ``*IDN?`` SCPI command.
         """
         pass
 
     @classmethod
-    def _vxi_configure(cls, backend: Backend):
+    def _vxi_configure(cls, backend: Backend) -> None:
         """
         A hook called after a :py:class:`VxiBackend` is constructed.
 
         This allows applying hardware-specific configuration.
         """
-        pass
+        return
 
     @classmethod
     def is_supported(cls, hardware_info: HardwareInfo) -> bool:

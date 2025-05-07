@@ -37,26 +37,27 @@ class Backend(abc.ABC):
     Interface of a communication backend for SCPI instruments.
     """
 
-    def set_timeout(self, secs: float):
+    def set_timeout(self, secs: float) -> None:
         """
         Set timeout for blocking operations. (optional)
         """
-        pass
+        return
 
-    def flush(self):
+    def flush(self) -> None:
         """
         Ensure all pending commands were sent to the instrument.
         """
+        return
 
     @abc.abstractmethod
-    def close(self):
+    def close(self) -> None:
         """
         Force closing of the backend.
         """
         pass
 
     @abc.abstractmethod
-    def write(self, cmds: str):
+    def write(self, cmds: str) -> None:
         pass
 
     @abc.abstractmethod

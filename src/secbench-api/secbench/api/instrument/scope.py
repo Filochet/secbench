@@ -89,7 +89,7 @@ class ScopeAnalogChannel(abc.ABC):
         """
         Disable the channel.
         """
-        pass
+        return
 
     @abc.abstractmethod
     def setup(
@@ -574,11 +574,11 @@ class Scope(abc.ABC):
                 return is_clipping(d)
 
             # Latter in your code:
-            scope.calibrate('1', is_clipping_callback, method=BinarySearchCalibration())
+            scope.calibrate('1', is_clipping_callback, method=StepSearchCalibration())
 
         """
         if method is None:
-            method = BinarySearchCalibration()
+            method = StepSearchCalibration()
         assert isinstance(method, Calibration)
         return method.run(self, self[channel], clip_detection_callback)
 
@@ -738,9 +738,9 @@ class StepSearchCalibration(Calibration):
     It also sets updates the voltage offset.
     """
 
-    def __init__(self, volts_min=0.001, volts_max=1, profile=None):
+    def __init__(self, volts_min=0.001, volts_max=20, profile=None):
         if profile is None:
-            profile = [0.50, 0.85]
+            profile = [0.20, 0.50, 0.90]
         self.volts_min = volts_min
         self.volts_max = volts_max
         self.profile = profile

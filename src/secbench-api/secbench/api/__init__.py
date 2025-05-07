@@ -56,14 +56,14 @@ from .types import Location
 # NOTE: we import the module ``secbench.instruments`` (if present) to
 # make hardware available by default.
 try:
-    import secbench.instruments
+    import secbench.instruments  # noqa: F401
 except ImportError:
     pass
 
-# NOTE: we import the module ``secbench.instruments`` (if present) to
+# NOTE: we import the module ``secbench.picoscope`` (if present) to
 # make hardware available by default.
 try:
-    import secbench.picoscope
+    import secbench.picoscope  # noqa: F401
 except ImportError:
     pass
 
@@ -91,6 +91,7 @@ __all__ = [
     "HasWaveformStorage",
     "HasScreenShot",
     "InstrumentMixin",
+    "QueryWriteInstrument",
     "SerialDeviceEntry",
     "SerialScanner",
     "UserConfig",

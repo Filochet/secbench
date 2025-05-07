@@ -37,8 +37,8 @@ import numpy as np
 
 from ..enums import Arithmetic, Coupling, Decimation
 from ..exceptions import InstrumentError, InvalidParameter
-from ..instrument import Scope, ScopeAnalogChannel
 from ..helpers import DATACLASS_KW_ONLY_AND_SLOTS
+from ..instrument import Scope, ScopeAnalogChannel
 
 
 def rand_int8_generator(channels, n_traces: int, n_samples: int):

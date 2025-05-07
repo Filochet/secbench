@@ -44,9 +44,9 @@ from typing_extensions import TypeAlias
 from ._utils import leaf_subclasses
 from .discovery import Discoverable, DiscoverPolicy, discover, discover_first
 from .exceptions import NoSuchHardwareError
+from .helpers import DATACLASS_KW_ONLY_AND_SLOTS
 from .instrument import Afg, PowerSupply, Pulser, Scope, Table
 from .types import JSON
-from .helpers import DATACLASS_KW_ONLY_AND_SLOTS
 
 logger = logging.getLogger(__name__)
 
@@ -484,7 +484,7 @@ class UserConfig:
         self._cfg.clear()
         self._host_cfg.clear()
 
-        if isinstance(paths, str) or isinstance(paths, Path):
+        if isinstance(paths, (str, Path)):
             paths = [paths]
         for p in paths:
             if not p:

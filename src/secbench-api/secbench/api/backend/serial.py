@@ -118,6 +118,7 @@ class SerialDiscoverableMixin(abc.ABC):
     """
 
     @classmethod
+    @abc.abstractmethod
     def _match_serial(cls, idn: str) -> bool:
         """
         Predicate to detect if the serial identifier of a serial port
@@ -131,14 +132,14 @@ class SerialDiscoverableMixin(abc.ABC):
         This method can be overwritten to pass additional arguments
         to the serial port constructor.
 
-        The dictionnary returned is passed to pyserial's `Serial`
+        The dictionary returned is passed to pyserial's `Serial`
         class constructor.
         """
         return {}
 
     @classmethod
-    def _setup_backend(cls, backend: Backend):
-        pass
+    def _setup_backend(cls, backend: Backend) -> None:
+        return
 
     @classmethod
     def is_supported(cls, hardware_info: HardwareInfo) -> bool:

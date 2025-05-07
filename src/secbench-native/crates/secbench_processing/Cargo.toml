@@ -1,0 +1,18 @@
+[package]
+name = "secbench_processing"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+pyo3.workspace = true
+numpy.workspace = true
+# rayon.workspace = true
+num-traits.workspace = true
+
+tracing.workspace = true
+tracing-subscriber.workspace = true
+
+num.workspace = true
+
+secbench_crypto.workspace = true
+secbench_dsp.workspace = true

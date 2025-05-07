@@ -30,10 +30,10 @@
 ###
 
 import pytest
+
 from secbench.api import get_bench
 from secbench.api.enums import Coupling, Decimation, Slope
 from secbench.api.exceptions import InvalidParameter
-
 from secbench.picoscope import PicoPS2000AScope, version
 from secbench.picoscope.error import PicoscopeApiError
 

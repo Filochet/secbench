@@ -61,17 +61,17 @@ class USBTMCBackend(Backend):
         self.query_delay = 0
         logger.debug(f"opening USBTMC device {path} (buffer size={buffering})")
         try:
-            self._fd_raw = open(path, "w+b", buffering=buffering)
-        except IOError:
+            self._fd_raw = open(path, "w+b", buffering=buffering)  # noqa: SIM115
+        except IOError as e:
             logger.error(f"unable to open path {path}")
             raise InstrumentError(
                 f"failed to open {path}; check USB cable and permissions"
-            )
+            ) from e
         super().__init__()
 
     def set_timeout(self, secs: float):
         logger.info(
-            "set_timeout method has no effect on USBTMC devices" " (calls are blocking)"
+            "set_timeout method has no effect on USBTMC devices (calls are blocking)"
         )
 
     def close(self):
@@ -121,13 +121,13 @@ class USBTMCDiscoverableMixin(abc.ABC):
         pass
 
     @classmethod
-    def _usbtmc_configure(cls, backend: USBTMCBackend):
+    def _usbtmc_configure(cls, backend: USBTMCBackend) -> None:
         """
         A hook called after a :py:class:`USBTMCBackend` is constructed.
 
         This allows applying hardware-specific configuration.
         """
-        pass
+        return
 
     @classmethod
     def _usbtmc_buffering(cls) -> Optional[int]:

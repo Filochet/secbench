@@ -36,8 +36,8 @@ from collections import OrderedDict
 from typing import Iterable, Mapping, Tuple
 
 from secbench.api import Discoverable, HardwareInfo
+from secbench.api.enums import Slope
 from secbench.api.instrument import ScopeAnalogChannel
-
 from secbench.picoscope.lib.ps6000 import PicoInfo, load_ps6000
 
 from .base import Picobase, PicobaseAnalogChannel, PicoHandles
@@ -48,7 +48,6 @@ logger = logging.getLogger(__name__)
 
 
 class PicoPS6000Scope(Discoverable, Picobase):
-
     _PICO_ALL_CHANNELS = {
         "A": 0,
         "B": 1,
@@ -72,6 +71,19 @@ class PicoPS6000Scope(Discoverable, Picobase):
         VerticalRange(20.0, 10, "20 V"),
         VerticalRange(50.0, 11, "50 V"),
     ]
+    _PICO_SLOPES = {
+        Slope.rising: 2,
+        Slope.falling: 3,
+        Slope.either: 4,
+    }
+    _MAX_SAMPLES = {
+        "6402C": 256 * 1024 * 1024,
+        "6402D": 512 * 1024 * 1024,
+        "6403C": 512 * 1024 * 1024,
+        "6403D": 1024 * 1024 * 1024,
+        "6404C": 1024 * 1024 * 1024,
+        "6404D": 2 * 1024 * 1024 * 1024,
+    }
 
     @staticmethod
     def ps6000_methods(lib):
@@ -83,9 +95,12 @@ class PicoPS6000Scope(Discoverable, Picobase):
             psGetTimebase2=lib.ps6000GetTimebase2,
             psStop=lib.ps6000Stop,
             psSetChannel=lib.ps6000SetChannel,
+            psSetNoOfCaptures=lib.ps6000SetNoOfCaptures,
             psRunBlock=lib.ps6000RunBlock,
             psSetDataBuffer=lib.ps6000SetDataBuffer,
+            psSetDataBufferBulk=lib.ps6000SetDataBufferBulk,
             psGetValues=lib.ps6000GetValues,
+            psGetValuesBulk=lib.ps6000GetValuesBulk,
             psSetSimpleTrigger=lib.ps6000SetSimpleTrigger,
             psMemorySegments=lib.ps6000MemorySegments,
             psPingUnit=lib.ps6000PingUnit,

@@ -339,8 +339,9 @@ class Carto(Iterable):
 
     def __repr__(self):
         return (
-            "<{} top-left: {:02.6f}, {:02.6f} bottom-right: {:02.6f}, "
-            "{:02.6f}>".format(self.__class__.__name__, *self.coords)
+            "<{} top-left: {:02.6f}, {:02.6f} bottom-right: {:02.6f}, {:02.6f}>".format(
+                self.__class__.__name__, *self.coords
+            )
         )
 
     def __iter__(self):

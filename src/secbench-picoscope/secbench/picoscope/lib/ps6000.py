@@ -45,6 +45,8 @@ from ctypes import (
 )
 from enum import IntEnum
 
+from .common import def_symbol, load_libps
+
 
 class PicoInfo(IntEnum):
     """
@@ -67,28 +69,8 @@ class PicoInfo(IntEnum):
     IPP_VERSION = 0x0000000D
 
 
-def def_symbol(lib, name, return_type, arg_types, docstring=None):
-    c_function = getattr(lib, name)
-    c_function.restype = return_type
-    c_function.argtypes = arg_types
-    if docstring is not None:
-        c_function.__doc__ = docstring
-
-
 def _load_ps6000_lib(name="ps6000"):
-    import platform
-
-    if platform.system() == "Linux":
-        from ctypes import cdll
-
-        lib = cdll.LoadLibrary(f"lib{name}.so.2")
-    elif platform.system() == "Darwin":
-        raise NotImplementedError("MacOSX is not supported yet")
-    else:
-        from ctypes import windll
-        from ctypes.util import find_library
-
-        lib = windll.LoadLibrary(find_library(f"{name}.dll"))
+    lib = load_libps(name)
 
     # fmt: off
     doc = """ PICO_STATUS ps6000OpenUnit
@@ -794,6 +776,7 @@ def _load_ps6000_lib(name="ps6000"):
     def_symbol(lib, "ps6000GetTriggerInfoBulk", c_uint16,
                [c_int16, c_void_p, c_uint32, c_uint32], doc)
     # fmt: on
+
     return lib
 
 

@@ -79,13 +79,14 @@ def test_secbench_main(capsys):
 
 def test_kwonly_dataclass_compat():
     import sys
+
     from secbench.api.instrument.pulser import EMPulseParams
 
     if sys.version_info < (3, 10):
         _ = EMPulseParams(10, 2, 3, 3)
     else:
         # kw_only must be enabled for python>3.10
-        with pytest.raises(Exception):
+        with pytest.raises(TypeError):
             _ = EMPulseParams(10, 2, 3, 3)
 
     _ = EMPulseParams(delay_ns=10, width_ns=3, rise_time_ns=1, amplitude=10)

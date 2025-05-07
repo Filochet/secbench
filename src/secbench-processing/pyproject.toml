@@ -1,0 +1,100 @@
+# Copyright CEA (Commissariat à l'énergie atomique et aux
+# énergies alternatives) (2017-2025)
+#
+# This software is governed by the CeCILL  license under French law and
+# abiding by the rules of distribution of free software.  You can  use,
+# modify and/ or redistribute the software under the terms of the CeCILL
+# license as circulated by CEA, CNRS and INRIA at the following URL
+# "http://www.cecill.info".
+#
+# As a counterpart to the access to the source code and  rights to copy,
+# modify and redistribute granted by the license, users are provided only
+# with a limited warranty  and the software's author,  the holder of the
+# economic rights,  and the successive licensors  have only  limited
+# liability.
+#
+# In this respect, the user's attention is drawn to the risks associated
+# with loading,  using,  modifying and/or developing or reproducing the
+# software by the user in light of its specific status of free software,
+# that may mean  that it is complicated to manipulate,  and  that  also
+# therefore means  that it is reserved for developers  and  experienced
+# professionals having in-depth computer knowledge. Users are therefore
+# encouraged to load and test the software's suitability as regards their
+# requirements in conditions enabling the security of their systems and/or
+# data to be ensured and,  more generally, to use and operate it in the
+# same conditions as regards security.
+#
+# The fact that you are presently reading this means that you have had
+# knowledge of the CeCILL license and that you accept its terms.
+###
+
+[project]
+name = "secbench-processing"
+version = "2.11.0" # <<SECBENCH_PROCESSING>>
+description = "Secbench algorithms for side-channel analysis"
+authors = [ { name = "Secbench team" , email = "support@secbench.fr" } ]
+# Unsupported by nix :(
+# license-files = ["LICENSE"]
+license = { file = "LICENSE" }
+requires-python = ">= 3.10"
+dependencies = [
+    "numpy>=1.21",
+    "scipy>=1.4.1",
+    "scikit-learn>=1.0.2",
+    # We make matplotlib and tensorflow optional dependencies because there are
+    # very large and not always needed.
+    # tensorflow = { version = "^2.3", optional = true }
+    "lttbc>=0.2",
+    "typing-extensions>=4.0.0",
+    "pandas>=2.0",
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Security",
+    "Topic :: Scientific/Engineering",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: CEA CNRS Inria Logiciel Libre License, version 2.1 (CeCILL-2.1)"
+]
+
+[project.optional-dependencies]
+mpl = ["matplotlib>=3.5"]
+
+[project.urls]
+"Homepage" = "https://doc.secbench.fr"
+"Bug Reports" = "https://github.com/CEA-Leti/secbench/issues"
+"Source" = "https://github.com/CEA-Leti/secbench"
+
+[tool.setuptools.packages.find]
+where = ["."]
+exclude = ["assets"]
+
+[tool.ruff.lint]
+select = [
+    # pycodestyle
+    "E",
+    # Pyflakes
+    "F",
+    # pyupgrade
+    # "UP",
+    # flake8-bugbear
+    "B",
+    # flake8-simplify
+    "SIM",
+    # isort
+    "I",
+]
+ignore = [
+    "E501",  # Line too long.
+    "SIM108",  # Use of ternary operator.
+    "B006", # TODO: Fix those, we have lot of them...
+]
+
+[build-system]
+requires = ["setuptools >= 61.0"]
+build-backend = "setuptools.build_meta"
