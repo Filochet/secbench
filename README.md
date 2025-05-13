@@ -3,6 +3,7 @@
 [![secbench-api version](https://img.shields.io/pypi/v/secbench-api?label=pypi%3A%20secbench-api)](https://pypi.org/project/secbench-api/#history)
 [![secbench-storage version](https://img.shields.io/pypi/v/secbench-storage?label=pypi%3A%20secbench-storage)](https://pypi.org/project/secbench-storage/#history)
 [![secbench-picoscope version](https://img.shields.io/pypi/v/secbench-picoscope?label=pypi%3A%20secbench-picoscope)](https://pypi.org/project/secbench-picoscope/#history)
+[![secbench-processing version](https://img.shields.io/pypi/v/secbench-processing?label=pypi%3A%20secbench-processing)](https://pypi.org/project/secbench-processing/#history)
 ![Python Version](https://img.shields.io/pypi/pyversions/secbench-api)
 
 # The Secbench Framework
@@ -57,9 +58,12 @@ If you want to build the documentation locally, you need to [create a developmen
 components are released yet, stay tuned!
 
 * Upcoming release:
-    * `secbench.processing` module (contains side-channel processing tools).
-    * `secbench.chipwhisperer` module: drivers for [ChipWhisperer](https://www.newae.com/chipwhisperer) devices
-    * `secbench.picoscope` module: support of additional models
+    * Better platform support (MacOS, Windows)
+    * `secbench.chipwhisperer` module: drivers for [ChipWhisperer](https://www.newae.com/chipwhisperer) devices.
+* 05/2025: 
+    * add `secbench.processing` module (contains side-channel processing tools).
+    * add `secbench.native` module, contains Rust-accelerated side-channel processing functions.
+    * `secbench.picoscope` module: support of rapidmode and PS3000 models.
 * 02/2025: initial release of secbench core components:
     * `secbench.api` module.
     * `secbench.storage` module.
