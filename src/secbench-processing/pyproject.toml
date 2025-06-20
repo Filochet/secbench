@@ -33,6 +33,7 @@ name = "secbench-processing"
 version = "2.11.0" # <<SECBENCH_PROCESSING>>
 description = "Secbench algorithms for side-channel analysis"
 authors = [ { name = "Secbench team" , email = "support@secbench.fr" } ]
+readme = "README.md"
 # Unsupported by nix :(
 # license-files = ["LICENSE"]
 license = { file = "LICENSE" }
