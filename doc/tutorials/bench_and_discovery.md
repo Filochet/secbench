@@ -19,7 +19,9 @@ The goal of this guide is to provide a deep understanding of the concept and des
 
 To get the best from this tutorial, here are some recommendations:
 - The tutorial is written so that each section can be read (or executed) linearly.
-- We recommend you to not rush this notebook, take the necessary time to understand the concepts. It will save you a lot of time.
+
+- We recommend you not to rush this notebook, take the necessary time to understand the concepts. It will save you a lot of time.
+
 - If possible, run this tutorial in a notebook and try to play with the examples, modify them and see how they behave.
 
 +++
